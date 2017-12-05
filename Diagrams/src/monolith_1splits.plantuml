@@ -1,0 +1,42 @@
+@startuml
+rectangle MyKart {
+    together {
+        package user {
+            [User profile and address management] as cmp2
+        }
+
+        package products {
+            [Product listings]
+        }
+    }
+
+    together {
+
+        package transactions {
+            [Purchases]
+        }
+
+        package external {
+            [External integrations] as ei
+        }
+
+    }
+
+    rectangle "ShippingService" {
+        [service load balancer] as lb1
+        [shipping1]
+        [shipping2]
+        [shipping3]
+    }
+
+note left of ShippingService : The revolting 'package'\n becoming a 'service'\n split from the monolith\n (aka POC)
+
+[Purchases] -[hidden]--> lb1
+lb1 -[hidden]--> ei
+cmp2 -[hidden]--> ei
+
+lb1 -[hidden]-> shipping1
+lb1 -[hidden]-> shipping2
+lb1 -[hidden]-> shipping3
+}
+@enduml

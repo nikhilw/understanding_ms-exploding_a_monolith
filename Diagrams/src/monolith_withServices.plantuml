@@ -1,0 +1,27 @@
+@startuml
+left to right direction
+package monolith {
+    [Proxies] as p
+    [Load balancer] as lb
+    'collections MyKart as mk
+    [MyKart] as mk
+    queue someQueue as q
+    database cache as c
+    database database as db
+    [Health Monitoring & Alerting Services] as m
+    [Log Aggregation & Analysis services] as l
+
+mk ..>lb :uses
+lb ..> p :uses
+mk ..>q :uses
+mk ..>c :uses
+mk ..>db :uses
+mk ..>m
+mk ..>l
+
+p -[hidden]-->lb
+lb -[hidden]-->mk
+lb -[hidden]-->m
+lb -[hidden]-->l
+}
+@enduml

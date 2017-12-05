@@ -1,0 +1,58 @@
+@startuml
+rectangle MyKart {
+    together {
+        rectangle UserService {
+            [User Load balancer] as ulb
+            [Instace 1] as us1
+            [Instace 2] as us2
+            [Instace 3] as us3
+
+        }
+
+        rectangle ProductsService {
+            [Product listings load balancer] as pllb
+            [Instance 1] as pll1
+            [Instance 2] as pll2
+            [Instance 3] as pll3
+        }
+    }
+
+    together {
+        rectangle TransactionsService {
+            [Purchases load balancer] as plb
+            [Instance 1] as pl1
+            [Instance 2] as pl2
+            [Instance 3] as pl3
+        }
+
+        rectangle "ShippingService" {
+            [service load balancer] as slb
+            [Instance 1] as sl1
+            [Instance 2] as sl2
+            [Instance 3] as sl3
+        }
+    }
+
+ulb -[hidden]--> us1
+ulb -[hidden]--> us2
+ulb -[hidden]--> us3
+
+pllb -[hidden]--> pll1
+pllb -[hidden]--> pll2
+pllb -[hidden]--> pll3
+
+plb -[hidden]--> pl1
+plb -[hidden]--> pl2
+plb -[hidden]--> pl3
+
+
+slb -[hidden]--> sl1
+slb -[hidden]--> sl2
+slb -[hidden]--> sl3
+
+pl1 -[hidden]--> pllb
+sl1 -[hidden]--> ulb
+'ulb -[hidden]--> pllb
+'slb -[hidden]--> plb
+}
+@enduml

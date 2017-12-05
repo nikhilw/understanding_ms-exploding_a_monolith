@@ -1,0 +1,95 @@
+@startuml
+rectangle MyKart {
+'top to bottom direction
+'left to right direction
+
+[TransactionsService]
+[ProductsService]
+[ShippingService]
+
+'collections GatewayService
+[GatewayService]
+
+rectangle [DiscoveryServer] as ds {
+    [Instance I]
+    [Instance II]
+    [Instance III]
+}
+
+rectangle "Log Aggregation Service" as las {
+    'collections [Aggregation Server]
+    [Aggregation Server]
+    database LogAggregationDb
+
+}
+
+rectangle [UserService] {
+    [UserService Code] as usc
+
+    rectangle "Circuit Breaker" as cb {
+
+        rectangle "Client-side Load Balancer" {
+
+            rectangle "Discovery aware rest client" as darc {
+            }
+        }
+
+    }
+
+    together {
+        rectangle "Config Service Client" as csc {
+        }
+
+        rectangle "Discovery Service Client" as dsc {
+        }
+
+        rectangle "Tracing Service Client" as tsc {
+        }
+    }
+
+    together {
+        rectangle "Log Aggregation Service Client" as lasc {
+        }
+
+        rectangle "Health check agent" as hca {
+        }
+    }
+
+    usc ..> darc :use
+    darc ..> dsc :use
+    tsc .[hidden]..> hca
+    darc .[hidden]..> tsc
+    darc .[hidden]..> csc
+}
+
+
+'collections "Central Configuration Service" as ccs
+["Central Configuration Service"] as ccs
+
+rectangle [DistributedTracingService]  as dts {
+'    collections [DistributedTracingServer]
+    [DistributedTracingServer]
+
+    queue DistributedTracingServerQueue
+}
+
+rectangle "Circuit Breaker Event Aggregation Service"  as cbeas {
+'    collections [Circuit Breaker Event Aggregation Server]
+    [Circuit Breaker Event Aggregation Server]
+    database CBEventAggregationDB
+}
+
+dsc ..> ds
+csc ..> ccs
+lasc ..> las
+tsc ..> dts
+hca ..> ds
+cb ..> cbeas
+
+'collections DiscoveryServer
+'collections ProductsService
+'collections UserService
+'collections TransactionsService
+'collections ShippingService
+
+@enduml

@@ -1,0 +1,50 @@
+@startuml
+rectangle MyKart {
+'left to right direction
+    together {
+        package "auth, user" {
+            [Login and User management]
+        }
+
+        package user {
+            [User profile and address management] as cmp2
+        }
+
+        package products {
+            [Product listings]
+        }
+
+        package transactions {
+            [Purchases]
+        }
+    }
+
+    together {
+        package shipping {
+            [cart, shipping]
+        }
+
+        package inventory {
+            [Inventory management]
+        }
+
+        package external {
+            [External integrations]
+        }
+    }
+
+    together {
+        package analytics {
+            [Analytics, Visualization and Projection dashboards]
+        }
+
+        package science {
+            [Recommendation System]
+        }
+    }
+
+[Purchases] -[hidden]--> [Inventory management]
+[External integrations] -[hidden]--> [Recommendation System]
+
+}
+@enduml
