@@ -25,6 +25,9 @@ rectangle "Log Aggregation Service" as las {
 
 rectangle [UserService] {
     [UserService Code] as usc
+    database UserServiceDatabase as uscDb
+    queue UserServiceQueue as uscQ
+
 
     rectangle "Circuit Breaker" as cb {
 
@@ -85,6 +88,8 @@ lasc ..> las
 tsc ..> dts
 hca ..> ds
 cb ..> cbeas
+usc --> uscDb
+usc --> uscQ
 
 'collections DiscoveryServer
 'collections ProductsService
